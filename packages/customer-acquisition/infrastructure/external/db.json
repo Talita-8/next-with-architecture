@@ -1,0 +1,28 @@
+{
+  "leads": [
+    {
+      "id": "7d4e8097-abd5-4e7d-919f-155716516888",
+      "fullName": "Doroteia Felicia",
+      "cpf": "33299877641",
+      "email": "doroty@hotmail.com"
+    },
+    {
+      "id": "7d4e8097-abd5-4e7d-919f-147125211738",
+      "fullName": "Luara Costa",
+      "cpf": "32354276500",
+      "email": "luara@yahoo.com"
+    },
+    {
+      "id": "7d4e8097-abd5-4e7d-919f-106851566479",
+      "fullName": "Capitu Caracolina",
+      "cpf": "11122233344",
+      "email": "capitulina@hotmail.com"
+    },
+    {
+      "id": "7d4e8097-abd5-4e7d-919f-193721762605",
+      "fullName": "Tizzo de Gales",
+      "cpf": "34576587611",
+      "email": "tizzo@gmail.com.br"
+    }
+  ]
+}

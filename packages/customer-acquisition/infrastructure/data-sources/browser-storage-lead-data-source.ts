@@ -2,6 +2,7 @@ import { FilterDto } from "@packages/customer-acquisition";
 import {
   LeadDataSourcePort,
   LeadDto,
+  UpdateLeadDto,
 } from "@packages/customer-acquisition/application";
 
 class BrowserStorageLeadDataSource implements LeadDataSourcePort {
@@ -37,6 +38,24 @@ class BrowserStorageLeadDataSource implements LeadDataSourcePort {
           (!filter.query ||
             lead.fullName.toLowerCase().includes(filter.query.toLowerCase()))
       );
+  }
+
+  async update(properties: UpdateLeadDto) {
+    let lead = this.storage.getItem(
+      `${BrowserStorageLeadDataSource.key}${properties.id}`
+    );
+    const property = properties.property
+    if (lead) {
+      const newLead: {[key: string]: any} = {
+        id: JSON.parse(lead).id,
+        cpf:JSON.parse(lead).cpf,
+        email: JSON.parse(lead).email,
+        fullName: JSON.parse(lead).fullName
+      };
+      
+      newLead[property] = properties.value;
+      this.storage.setItem(`${BrowserStorageLeadDataSource.key}${properties.id}`, JSON.stringify(newLead));
+    }
   }
 }
 

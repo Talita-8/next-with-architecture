@@ -1,4 +1,5 @@
 import {
+  useUpdateLead,
   useCreateLead,
   useFilterLeads,
   useListLeadsPresenter,
@@ -22,6 +23,11 @@ const useHomeController = () => {
     { error: createLeadError, loading: createLeadLoading },
   ] = useCreateLead();
 
+  const [
+    handleUpdateLead, 
+    { error: updateLeadError, loading: updateLeadLoading }
+  ] = useUpdateLead();
+  
   const error = leadError || createLeadError;
   const loading = leadLoading || createLeadLoading;
 
@@ -39,6 +45,7 @@ const useHomeController = () => {
     {
       handleCreateLead,
       handleFilterLeads,
+      handleUpdateLead, 
     },
   ];
 };

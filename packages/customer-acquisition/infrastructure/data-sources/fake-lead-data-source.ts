@@ -2,6 +2,7 @@ import { FilterDto } from "@packages/customer-acquisition";
 import {
   LeadDataSourcePort,
   LeadDto,
+  UpdateLeadDto,
 } from "@packages/customer-acquisition/application";
 
 class FakeLeadDataSource implements LeadDataSourcePort {
@@ -40,6 +41,15 @@ class FakeLeadDataSource implements LeadDataSourcePort {
           },
         ]);
       }, 1000);
+    });
+  }
+
+  async update(properties: UpdateLeadDto) {
+    return console.log({
+      id: "2",
+      fullName: "Another Full Name",
+      cpf: "00123456789",
+      email: "email@another.test.com",
     });
   }
 }

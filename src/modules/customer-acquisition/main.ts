@@ -4,7 +4,9 @@ import {
   FakeLeadDataSource,
   FilterLeadsUseCase,
   FindLeadByIdUseCase,
+  UpdateLeadUseCase,
   LeadRepository,
+  LocalAPILeadDataSource,
 } from "@packages/customer-acquisition";
 import { LeadCreatedEvent } from "@packages/customer-acquisition/application/domain";
 import {
@@ -30,7 +32,7 @@ const loggerEventHandler = new LoggerEventHandlerAdapter(logger);
 const eventDispatcher = new EventDispatcherAdapter();
 const leadDataSource =
   isBrowser && window.localStorage
-    ? new BrowserStorageLeadDataSource(window.localStorage)
+    ? new LocalAPILeadDataSource()
     : new FakeLeadDataSource();
 const leadRepository = new LeadRepository(leadDataSource);
 const findLeadByIdUseCase = new FindLeadByIdUseCase(leadDataSource);
@@ -39,7 +41,8 @@ const createLeadUseCase = new CreateLeadUseCase(
   leadRepository,
   eventDispatcher
 );
+const updateLeadUseCase = new UpdateLeadUseCase(leadDataSource);
 
 eventDispatcher.register(LeadCreatedEvent.name, loggerEventHandler);
 
-export { createLeadUseCase, findLeadByIdUseCase, filterLeadsUseCase };
+export { createLeadUseCase, findLeadByIdUseCase, filterLeadsUseCase, updateLeadUseCase };
