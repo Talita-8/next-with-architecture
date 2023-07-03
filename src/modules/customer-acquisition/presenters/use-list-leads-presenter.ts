@@ -8,12 +8,12 @@ const cpfFormatter = (cpf: string) => {
 const useListLeadsPresenter = (leads: LeadDto[] | undefined) => {
   return leads
     ? leads.map((lead) => ({
-        id: lead.id as string,
-        fullName: lead.fullName.toUpperCase(),
-        cpf: cpfFormatter(lead.cpf),
-        email: lead.email.toLowerCase(),
-        hasSomething: !!Math.round(Math.random()),
-      }))
+      id: lead.id as string,
+      fullName: lead.fullName.toUpperCase(),
+      cpf: cpfFormatter(lead.cpf),
+      email: lead.email.toLowerCase(),
+      hasSomething: !!Math.round(Math.random()),
+    }))
     : [];
 };
 

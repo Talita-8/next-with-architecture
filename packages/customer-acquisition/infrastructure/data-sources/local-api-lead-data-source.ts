@@ -32,8 +32,25 @@ class LocalAPILeadDataSource implements LeadDataSourcePort {
 
   async filter(filter: FilterDto) {
     const lead = await fetch(LocalAPILeadDataSource.url).then(
-      (data: Response) => data);
-    return lead ? lead.json() : null;
+      async (data: Response) => {
+        if (filter.query) {
+          const body: LeadDto[] = await (<any>data).json();
+          return body.map(item => {
+            if (Object
+              .values(item)
+              .find(property => property.includes(filter.query))) {
+              return item;
+            }
+          }).find(lead => lead);
+        } else {
+          return data;
+        }
+      }
+    );
+    if (lead) {
+      return filter.query ? [lead] : lead.json();
+    }
+    return null;
   }
 
   async update(properties: UpdateLeadDto) {
@@ -42,26 +59,37 @@ class LocalAPILeadDataSource implements LeadDataSourcePort {
       headers: {
         "Content-Type": "application/json"
       }
-    }).then((data: Response) => {
-      if ((<any>data).id === properties.id) {
-        const property = properties.property
-        const newLead: { [key: string]: any } = {
-          id: (<any>data).id,
-          cpf: (<any>data).cpf,
-          email: (<any>data).email,
-          fullName: (<any>data).fullName
-        };
-        newLead[property] = properties.value;
+    }).then(
+      async (data: Response) => {
+        const body: LeadDto[] = await (<any>data).json();
+        const lead = body.map(item => {
+          if (Object
+            .values(item)
+            .find(property => property.includes(properties.id))) {
+            return item;
+          }
+        }).find(lead => lead);
 
-        fetch(LocalAPILeadDataSource.url, {
-          method: 'POST',
-          body: JSON.stringify(newLead),
-          headers: {
-            "Content-Type": "application/json"
-          },
-        });
+        if (lead) {
+          const property = properties.property
+          const newLead: { [key: string]: any } = {
+            id: lead.id,
+            cpf: lead.cpf,
+            email: lead.email,
+            fullName: lead.fullName
+          };
+          newLead[property] = properties.value;
+
+          fetch(LocalAPILeadDataSource.url + `/${newLead.id}`, {
+            method: 'PUT',
+            body: JSON.stringify(newLead),
+            headers: {
+              "Content-Type": "application/json"
+            },
+          });
+        }
       }
-    });
+    );
   }
 }
 export default LocalAPILeadDataSource;
